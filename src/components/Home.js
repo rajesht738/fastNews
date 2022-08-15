@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
-import { getFeaturedPosts, getLatestPosts } from '../api/post';
+import { getFeaturedPosts, getLatestPosts, getSinglePosts } from '../api/post';
 import PostListItem from '../components/PostListItem';
 import Slider from '../components/Slider';
 import Seprator from '../Seprator';
@@ -36,10 +36,10 @@ const data = [
   },
 ];
 
- 
+
 let pageNo = 0;
 const limit = 5;
-export default function Home() {
+export default function Home({ navigation }) {
 
   const [featuredPosts, setFeaturedPosts] = useState([]);
   const [latestPosts, setLatestPosts] = useState([]);
@@ -55,21 +55,21 @@ export default function Home() {
   const fetchLatestdPosts = async () => {
     const { error, posts } = await getLatestPosts(pageNo, limit);
     if (error) return console.log(error);
-    
+
     setLatestPosts(posts);
   }
 
   const fetchMorePosts = async () => {
-  
-    if(reachedToEnd || busy) return;
-    pageNo+=1;
+
+    if (reachedToEnd || busy) return;
+    pageNo += 1;
     setBusy(true);
-    const { error, posts , postCount} = await getLatestPosts(pageNo, limit);
+    const { error, posts, postCount } = await getLatestPosts(pageNo, limit);
     setBusy(false);
     if (error) return console.log(error);
 
-    if(postCount === latestPosts.length) return setReachedToEnd(true);
-     setLatestPosts([...latestPosts, ...posts]);
+    if (postCount === latestPosts.length) return setReachedToEnd(true);
+    setLatestPosts([...latestPosts, ...posts]);
   }
 
   useEffect(() => {
@@ -80,7 +80,7 @@ export default function Home() {
   const ListHeaderComponent = () => {
     return (
       <View>
-       {featuredPosts.length ? (<Slider data={featuredPosts} title="Featured Posts" />):  null}
+        {featuredPosts.length ? (<Slider data={featuredPosts} title="Featured Posts" />) : null}
         <View style={{ marginTop: 15 }}>
 
           <Seprator />
@@ -89,12 +89,18 @@ export default function Home() {
 
       </View>
     )
+  };
+  const fetchSinglePost = async (slug) => {
+    const {error , post} = await getSinglePosts(slug);
+    if(error) console.log(error) ;
+    navigation.navigate('PostDetails', {post} );
   }
+ 
   const ItemSeparatorComponent = () => <Seprator width='90%' style={{ marginTop: 15 }} />
-  const renderItem =  ({ item }) => {
+  const renderItem = ({ item }) => {
     return (
       <View style={{ marginTop: 15 }}>
-        <PostListItem posts={item} />
+        <PostListItem onPresst={() => fetchSinglePost(item.slug)} posts={item} />
       </View>
     )
   }
@@ -103,7 +109,7 @@ export default function Home() {
     <FlatList
       data={latestPosts}
       keyExtractor={(item) => item.id}
-      contentContainerStyle={{ paddingHorizontal: 10 , paddingBottom: 20}}
+      contentContainerStyle={{ paddingHorizontal: 10, paddingBottom: 20 }}
       ListHeaderComponent={ListHeaderComponent}
       ItemSeparatorComponent={ItemSeparatorComponent}
       renderItem={renderItem}
@@ -119,7 +125,7 @@ export default function Home() {
           }}>
             You reached to end!
           </Text>
-        ): null;
+        ) : null;
       }}
     />
   )

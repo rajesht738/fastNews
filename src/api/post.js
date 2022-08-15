@@ -26,3 +26,29 @@ export const getLatestPosts = async ( pageNo , limit) => {
         return { error: error.message || error };
     }
 }
+export const getSinglePosts = async ( slug ) => {
+    try {
+        const { data } = await client(`/post/single/${slug}`);
+        return data;
+
+    } catch (error) {
+        const { response } = error;
+        if (response?.data) {
+            return response.data;
+        }
+        return { error: error.message || error };
+    }
+}
+export const getSimilarPosts = async ( id ) => {
+    try {
+        const { data } = await client(`/post/related-posts/${id}`);
+        return data;
+
+    } catch (error) {
+        const { response } = error;
+        if (response?.data) {
+            return response.data;
+        }
+        return { error: error.message || error };
+    }
+}
