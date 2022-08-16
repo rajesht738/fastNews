@@ -10,7 +10,7 @@ const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
   return (
 
-    <Tab.Navigator>
+    <Tab.Navigator >
       <Tab.Screen
         options={{
           tabBarLabel: 'Home',

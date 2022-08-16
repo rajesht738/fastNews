@@ -10,13 +10,14 @@ import {
     useColorScheme,
     View,
     Dimensions,
+    TouchableWithoutFeedback,
 } from 'react-native';
 
 
 let currentSlideIndex = 0;
 const width = Dimensions.get('window').width - 20;
 let intervalId;
-const Slider = ({ data, title }) => {
+const Slider = ({ data, title, onSlidePress }) => {
     const [dataToRender, setDataToRender] = useState([]);
     const [visibleSlideIndex, setVisibleSlideIndex] = useState(0);
     const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -52,7 +53,7 @@ const Slider = ({ data, title }) => {
 
     useEffect(() => {
         if (dataToRender.length && flateListRef.current) {
-           startSlider();
+            startSlider();
         }
     }, [dataToRender.length]);
 
@@ -74,17 +75,21 @@ const Slider = ({ data, title }) => {
     }, [visibleSlideIndex]);
 
     const renderItem = ({ item }) => {
-        return (<View>
-            <Image
-                source={{ uri: item.thumbnail }}
-                style={{ width, height: width / 1.7, borderRadius: 7 }}
-            />
-            <View style={{ width }}>
-                <Text
-                    numberOfLines={2}
-                    style={{ fontWeight: "700", color: "#383838", fontSize: 22 }}>{item.title}</Text>
-            </View>
-        </View>)
+        return (
+            <TouchableWithoutFeedback onPress={() => onSlidePress(item)}>
+                <View>
+                    <Image
+                        source={{ uri: item.thumbnail }}
+                        style={{ width, height: width / 1.7, borderRadius: 7 }}
+                    />
+                    <View style={{ width }}>
+                        <Text
+                            numberOfLines={2}
+                            style={{ fontWeight: "700", color: "#383838", fontSize: 22 }}>{item.title}</Text>
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
+        )
     }
     return (
         <ScrollView>
@@ -97,7 +102,7 @@ const Slider = ({ data, title }) => {
 
                 </View>
                 <FlatList
-                
+
                     ref={flateListRef}
                     data={dataToRender}
                     keyExtractor={(item, index) => item.id + index}
@@ -123,7 +128,7 @@ const Slider = ({ data, title }) => {
     );
 };
 
-const SlideIndicators = ({ data, activeSlideIndex }) => 
+const SlideIndicators = ({ data, activeSlideIndex }) =>
     data.map((item, index) => {
         return (
             <View key={item.id} style={[
@@ -134,7 +139,7 @@ const SlideIndicators = ({ data, activeSlideIndex }) =>
                 },
             ]}
             />
-        ) 
+        )
     });
 
 

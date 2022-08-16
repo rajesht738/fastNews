@@ -5,12 +5,13 @@ import Markdown from 'react-native-markdown-display';
 import { getSinglePosts } from '../api/post';
 import { Linking } from 'react-native';
 import RelatedPosts from './RelatedPosts';
+import Seprator from '../Seprator';
 const { width } = Dimensions.get('window');
 const BASE_URL = "github.com/iamacup";
 
 const PostDetails = ({ route, navigation }) => {
   const post = route.params?.post;
-  console.log(post);
+ 
   if (!post) return;
 
   const { title, content, meta, slug, tags, thumbnail, author, createdAt } = post;
@@ -89,14 +90,14 @@ const PostDetails = ({ route, navigation }) => {
         </Markdown>
       </View>
 
-      <View >
+      <View style={{padding: 10}}>
       <Text  style={{
             fontWeight: "bold",
             color: "#383838",
-            textAlign: "center",
             paddingVertical: 15,
-            fontSize:19
+            fontSize:22
           }}>Related Posts</Text>
+          <Seprator width='100%'/>
         <RelatedPosts onPostPress={fetchSinglePosts} postId={post.id}/>
       </View>
     </ScrollView>

@@ -52,3 +52,16 @@ export const getSimilarPosts = async ( id ) => {
         return { error: error.message || error };
     }
 }
+export const searchPosts = async ( query ) => {
+    try {
+        const { data } = await client(`/post/search?title=${query}`);
+        return data;
+
+    } catch (error) {
+        const { response } = error;
+        if (response?.data) {
+            return response.data;
+        }
+        return { error: error.message || error };
+    }
+}

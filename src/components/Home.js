@@ -59,6 +59,7 @@ export default function Home({ navigation }) {
     setLatestPosts(posts);
   }
 
+
   const fetchMorePosts = async () => {
 
     if (reachedToEnd || busy) return;
@@ -80,7 +81,7 @@ export default function Home({ navigation }) {
   const ListHeaderComponent = () => {
     return (
       <View>
-        {featuredPosts.length ? (<Slider data={featuredPosts} title="Featured Posts" />) : null}
+        {featuredPosts.length ? (<Slider onSlidePress={fetchSinglePost} data={featuredPosts} title="Featured Posts" />) : null}
         <View style={{ marginTop: 15 }}>
 
           <Seprator />
@@ -90,7 +91,8 @@ export default function Home({ navigation }) {
       </View>
     )
   };
-  const fetchSinglePost = async (slug) => {
+  const fetchSinglePost = async (postInfo) => {
+    const slug = postInfo.slug || postInfo;
     const {error , post} = await getSinglePosts(slug);
     if(error) console.log(error) ;
     navigation.navigate('PostDetails', {post} );
