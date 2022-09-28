@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { getFeaturedPosts, getLatestPosts, getSinglePosts } from '../api/post';
 import PostListItem from '../components/PostListItem';
@@ -48,7 +48,8 @@ export default function Home({ navigation }) {
 
   const fetchFeaturedPosts = async () => {
     const { error, posts } = await getFeaturedPosts();
-    if (error) return console.log(error);
+    
+    if (error) return console.log('Err',error);
     setFeaturedPosts(posts);
     // console.log("length", data);
   }
@@ -76,9 +77,13 @@ export default function Home({ navigation }) {
   useEffect(() => {
     fetchFeaturedPosts();
     fetchLatestdPosts();
+    return () => {
+      pageNo=0;
+      setReachedToEnd(false);
+    }
   }, [])
 
-  const ListHeaderComponent = () => {
+  const ListHeaderComponent = useCallback( () => {
     return (
       <View>
         {featuredPosts.length ? (<Slider onSlidePress={fetchSinglePost} data={featuredPosts} title="Featured Posts" />) : null}
@@ -90,7 +95,7 @@ export default function Home({ navigation }) {
 
       </View>
     )
-  };
+  }, [featuredPosts]);
   const fetchSinglePost = async (postInfo) => {
     const slug = postInfo.slug || postInfo;
     const {error , post} = await getSinglePosts(slug);

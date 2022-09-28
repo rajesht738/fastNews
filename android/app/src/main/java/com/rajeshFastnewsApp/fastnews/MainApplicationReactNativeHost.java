@@ -1,4 +1,4 @@
-package com.fastnews.newarchitecture;
+package com.rajesh.fastNews.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.fastnews.BuildConfig;
-import com.fastnews.newarchitecture.components.MainComponentsRegistry;
-import com.fastnews.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.rajesh.fastNews.BuildConfig;
+import com.rajesh.fastNews.newarchitecture.components.MainComponentsRegistry;
+import com.rajesh.fastNews.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

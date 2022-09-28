@@ -1,4 +1,4 @@
-package com.fastnews;
+package com.rajesh.fastNews;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

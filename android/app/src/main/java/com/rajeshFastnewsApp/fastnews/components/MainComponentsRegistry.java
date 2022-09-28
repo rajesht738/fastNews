@@ -1,4 +1,4 @@
-package com.fastnews.newarchitecture.components;
+package com.rajesh.fastNews.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

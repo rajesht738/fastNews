@@ -9,12 +9,16 @@ const height = StatusBarManager.HEIGHT;
 const Search = ({navigation}) => {
   const [query, setQuery] = useState();
   const [result, setResult] = useState([]);
+  const [notFound, setNotFound] = useState(false);
 
   const handleOnSubmit = async () => {
     if (!query.trim()) return false;
     const { error, posts } = await searchPosts(query);
 
     if (error) return console.log(error);
+
+    if(!posts.length) return setNotFound(true);
+    setNotFound(false)
     setResult([...posts])
     // console.log(posts);
   }
@@ -34,7 +38,9 @@ const Search = ({navigation}) => {
         style={styles.searchInput} />
 
       <ScrollView>
-        {result.map((post) => {
+        {notFound ? <Text
+        style={{fontSize:22, fontWeight: 'bold', marginTop: 30, textAlign: 'center'}}
+        >Not Found</Text> :result.map((post) => {
           return (
             <View key={post.id} style={{paddingTop: 10}}>
             <PostListItem  onPresst={() => handlePost(post.slug)} posts={post} />
